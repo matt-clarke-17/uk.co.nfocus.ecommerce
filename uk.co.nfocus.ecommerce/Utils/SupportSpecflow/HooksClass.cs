@@ -20,7 +20,7 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
         public static string username;
         public static string password;
 
-        [Before] //Equivalent of nUnit [SetUp] - could also use [BeforeScenario]
+        [Before, Scope(Tag = "GUI")] //Equivalent of nUnit [SetUp] - could also use [BeforeScenario]
         public void SetUp()
         {
             username = Environment.GetEnvironmentVariable("USERNAME");
@@ -50,7 +50,7 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
         }
     
 
-        [After] //Equivalent of nUnit [TearDown] - could also use [AfterScenario]
+        [After("GUI")] //Equivalent of nUnit [TearDown] - could also use [AfterScenario]
         public void TearDown()
         {
             driver.Quit();
