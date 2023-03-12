@@ -45,19 +45,14 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             TakeScreenshotOfElement(driver, "CapInBasket");
         }
 
-        //[When(@"I go to the checkout and add the discount code")]
         [When(@"I apply a discount code")]
         public void WhenIGoToTheCheckoutAndAddTheDiscountCode()
         {
-            //TopNav topNav = new TopNav(driver);
-            //navigates to the basket and adds the discount code 
-            //topNav.Cart.Click();
-            //Assert.That(driver.Url.Equals("https://www.edgewordstraining.co.uk/demo-site/cart/"));
+            //coupon application code 
             driver.FindElement(By.Id("coupon_code")).SendKeys("edgewords");
             driver.FindElement(By.CssSelector("button[name = 'apply_coupon']")).Click();
             Thread.Sleep(2000);
             Console.WriteLine(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text);
-
         }
 
         [Then(@"it should reduce the cost when applied")]
@@ -74,18 +69,8 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         [Given(@"I have placed an order")]
         public void GivenIHavePlacedAnOrder()
         {
+            //flushes out any info prior to data insertion for order placement 
             TopNav topNav = new TopNav(driver);
-            /*
-            topNav.MyAccount.Click();
-            //add cap to basket
-            driver.FindElement(By.Id("username")).SendKeys(username);
-            driver.FindElement(By.Id("password")).SendKeys(password);
-            driver.FindElement(By.Name("login")).Click();
-            topNav.Shop.Click();
-            driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys("Cap" + Keys.Enter);
-            driver.FindElement(By.Name("add-to-cart")).Click();
-            //navigate to checkout and add delivery details 
-            */
             topNav.Checkout.Click();
             driver.FindElement(By.Id("billing_address_1")).Clear();
             driver.FindElement(By.Id("billing_address_1")).SendKeys("24 Palmyra Square North");
@@ -142,6 +127,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         [Given(@"I am on the Cart Page")]
         public void IAmOnTheCartPage()
         {
+            //navigates to the basket after the cap has been added to the basket 
             TopNav topNav = new TopNav(driver);
             topNav.Cart.Click();
             Assert.That(driver.Url.Equals("https://www.edgewordstraining.co.uk/demo-site/cart/"));

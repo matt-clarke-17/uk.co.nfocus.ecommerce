@@ -6,8 +6,6 @@ Background:
 Given I am logged in and have the cap in my basket
 
 Scenario: Adding discount
-//Given I am logged in and have the cap in my basket
-//When I go to the checkout and add the discount code
 Given I am on the Cart Page
 When I apply a discount code
 Then it should reduce the cost when applied
