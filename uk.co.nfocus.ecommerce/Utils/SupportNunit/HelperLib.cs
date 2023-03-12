@@ -8,6 +8,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
+using Gherkin.CucumberMessages.Types;
 
 namespace uk.co.nfocus.ecommerce.Utils.SupportNunit
 {
@@ -27,14 +28,14 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportNunit
             wait.Until(drv => drv.FindElement(theElement).Displayed);
         }
 
-        public static void TakeScreenshotOfElement(IWebDriver driver, By locator, string filename)
+        public static void TakeScreenshotOfElement(IWebDriver driver, string filename)
         {
-            IWebElement form = driver.FindElement(locator);
-            ITakesScreenshot forms = form as ITakesScreenshot;
+            
+            ITakesScreenshot forms = driver as ITakesScreenshot;
             var screenshotForm = forms.GetScreenshot();
-            screenshotForm.SaveAsFile(@"C:\Users\MatthewClarke\Downloads" + filename, ScreenshotImageFormat.Png);
+            screenshotForm.SaveAsFile(@"C:\Users\MatthewClarke\source\repos\uk.co.nfocus.ecommerce\uk.co.nfocus.ecommerce\TestingOutput\" + filename, ScreenshotImageFormat.Png);
             TestContext.WriteLine("Screenshot taken - see report");
-            TestContext.AddTestAttachment(@"C:\Users\MatthewClarke\Downloads" + filename);
+            TestContext.AddTestAttachment(@"C:\Users\MatthewClarke\source\repos\uk.co.nfocus.ecommerce\uk.co.nfocus.ecommerce\TestingOutput\" + filename);
         }
     }
 }
