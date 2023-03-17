@@ -31,7 +31,6 @@
 
   <ItemGroup>
     <Folder Include="TestingOutput\" />
-    <Folder Include="POMClasses\" />
   </ItemGroup>
 
 </Project>

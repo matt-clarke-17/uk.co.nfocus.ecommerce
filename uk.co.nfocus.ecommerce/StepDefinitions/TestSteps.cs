@@ -7,11 +7,12 @@ using TechTalk.SpecFlow;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using static uk.co.nfocus.ecommerce.Utils.SupportSpecflow.HooksClass;
-using static uk.co.nfocus.ecommerce.Utils.SupportNunit.HelperLib;
 using uk.co.nfocus.ecommerce.PageObjects;
 using System.Xml.Linq;
 using OpenQA.Selenium.Remote;
 using OpenQA.Selenium.DevTools.V108.Page;
+using System.Globalization;
+using uk.co.nfocus.ecommerce.Utils.SupportSpecflow;
 
 namespace uk.co.nfocus.ecommerce.StepDefinitions
 {
@@ -21,16 +22,18 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
     {
 
         private readonly ScenarioContext _scenarioContext;
+        HelperLib helperLib = new HelperLib();
 
         public TestSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext;
+            
         }
 
         //implement a background
         //similar code start point for both scenarios
-        [Given(@"I am logged in and have the cap in my basket")]
-        public void GivenIAmLoggedInAndHaveTheCapInMyBasket()
+        [Given(@"I am logged in")]
+        public void GivenIAmLoggedIn()
         {
             //top nav cannot be implemented as a feature of scenario context so must be instanciated for each method that wishes to use pom
             TopNav topNav = new TopNav(driver);
@@ -39,50 +42,62 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             driver.FindElement(By.Id("username")).SendKeys(username);
             driver.FindElement(By.Id("password")).SendKeys(password);
             driver.FindElement(By.Name("login")).Click();
-            topNav.Shop.Click();
-            driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys("Cap" + Keys.Enter);
-            driver.FindElement(By.Name("add-to-cart")).Click();
-            TakeScreenshotOfElement(driver, "CapInBasket");
         }
 
-        [When(@"I apply a discount code")]
-        public void WhenIGoToTheCheckoutAndAddTheDiscountCode()
+        [When(@"I apply a discount code (.*)")]
+        public void WhenIAddTheDiscountCode(string discountCode)
         {
             //coupon application code 
-            driver.FindElement(By.Id("coupon_code")).SendKeys("edgewords");
+            driver.FindElement(By.Id("coupon_code")).SendKeys(discountCode);
             driver.FindElement(By.CssSelector("button[name = 'apply_coupon']")).Click();
-            Thread.Sleep(2000);
-            Console.WriteLine(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text);
+            Thread.Sleep(1500);
         }
 
-        [Then(@"it should reduce the cost when applied")]
-        public void ThenShouldReduceTheCostWhenApplied()
+        [Then(@"it should reduce the cost when applied by (.*)")]
+        public void ThenShouldReduceTheCostWhenApplied(string discountPercentage)
         {
             //test could show failure if the basket is not completely empty prior to start
             //could revamp to use modulo (Lack of remainder) on a divisiion
             //would need double coversion to implement 
-            TakeScreenshotOfElement(driver, "DiscountApplied");
-            Assert.That(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text, Does.Contain("£2.40"));
+            helperLib.TakeScreenshotOfElement(driver,"DiscountApplied");
+            //obtain raw item price
+            Console.WriteLine(driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text);
+            decimal basePrice = decimal.Parse(driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text.Remove(0, 1));
+            Console.WriteLine(basePrice);
+            Console.WriteLine(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text);
+            decimal discountPrice = decimal.Parse(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text.Remove(0, 1));
+            Console.WriteLine(discountPrice);
+            decimal percentReduction = (discountPrice / basePrice) * 100;
+            Console.WriteLine(percentReduction);
+            string percentReductionStr = Convert.ToString(percentReduction).Remove(2);
+            Console.WriteLine(percentReductionStr);
+            Assert.That(percentReductionStr, Is.EqualTo(discountPercentage));
 
         }
 
         [Given(@"I have placed an order")]
         public void GivenIHavePlacedAnOrder()
         {
+
             //flushes out any info prior to data insertion for order placement 
             TopNav topNav = new TopNav(driver);
+            topNav.Shop.Click();
+            driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys("Cap" + Keys.Enter);
+            driver.FindElement(By.Name("add-to-cart")).Click();
+            TakeScreenshotOfElement(driver, "CapInBasket");
             topNav.Checkout.Click();
+            //parameterise this as test parameters
             driver.FindElement(By.Id("billing_address_1")).Clear();
-            driver.FindElement(By.Id("billing_address_1")).SendKeys("24 Palmyra Square North");
+            driver.FindElement(By.Id("billing_address_1")).SendKeys(street);
             driver.FindElement(By.Id("billing_city")).Clear();
-            driver.FindElement(By.Id("billing_city")).SendKeys("Warrington");
+            driver.FindElement(By.Id("billing_city")).SendKeys(area);
             driver.FindElement(By.Id("billing_state")).Clear();
-            driver.FindElement(By.Id("billing_state")).SendKeys("Warrington");
+            driver.FindElement(By.Id("billing_state")).SendKeys(region);
             driver.FindElement(By.Id("billing_postcode")).Clear();
-            driver.FindElement(By.Id("billing_postcode")).SendKeys("WA1 9SJ");
+            driver.FindElement(By.Id("billing_postcode")).SendKeys(postcode);
             driver.FindElement(By.Id("billing_phone")).Clear();
-            driver.FindElement(By.Id("billing_phone")).SendKeys("398276237692370");
-            TakeScreenshotOfElement(driver, "OrderDetailsConfirmation");
+            driver.FindElement(By.Id("billing_phone")).SendKeys(phoneNumber);
+            helpeTakeScreenshotOfElement(driver, "OrderDetailsConfirmation");
 
         }
 
@@ -90,9 +105,9 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         public void WhenItIsCompleted()
         {
             //wait for website js to refresh and update
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             driver.FindElement(By.CssSelector("button#place_order")).Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
 
         }
 
@@ -132,7 +147,19 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             topNav.Cart.Click();
             Assert.That(driver.Url.Equals("https://www.edgewordstraining.co.uk/demo-site/cart/"));
         }
+        [Given(@"I have (.*) in my basket")]
+        public void AddItemToBasket(string itemName)
+        {
+            TopNav topNav = new TopNav(driver);
+            topNav.Shop.Click();
+            driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys(itemName + Keys.Enter);
+            driver.FindElement(By.Name("add-to-cart")).Click();
+            //re-use of variable to avoid pointless variable generation
+            itemName = itemName + "InBasket";
+            TakeScreenshotOfElement(driver, itemName);
+        }
     }
+    //POMs
 }
 
 

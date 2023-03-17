@@ -10,10 +10,14 @@ using OpenQA.Selenium.Support.UI;
 using System.Threading;
 using Gherkin.CucumberMessages.Types;
 
-namespace uk.co.nfocus.ecommerce.Utils.SupportNunit
+namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
 {
-    public static class HelperLib
+    class HelperLib
     {
+        public HelperLib()
+        {
+
+        }
         public static void HandleAlert(IWebDriver driver)
         {
             Thread.Sleep(1000);
@@ -22,15 +26,15 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportNunit
             logoutAlert.Accept();
         }
 
-        public static void WaitForElementPresent(IWebDriver driver, By theElement, int time) 
-        { 
+        public static void WaitForElementPresent(IWebDriver driver, By theElement, int time)
+        {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
             wait.Until(drv => drv.FindElement(theElement).Displayed);
         }
 
         public static void TakeScreenshotOfElement(IWebDriver driver, string filename)
         {
-            
+
             ITakesScreenshot forms = driver as ITakesScreenshot;
             var screenshotForm = forms.GetScreenshot();
             screenshotForm.SaveAsFile(@"C:\Users\MatthewClarke\source\repos\uk.co.nfocus.ecommerce\uk.co.nfocus.ecommerce\TestingOutput\" + filename, ScreenshotImageFormat.Png);

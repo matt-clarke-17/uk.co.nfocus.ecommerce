@@ -3,12 +3,19 @@ Feature: Discount Application and Order Confirmation
 
 A short summary of the feature
 Background: 
-Given I am logged in and have the cap in my basket
+Given I am logged in
 
 Scenario: Adding discount
+Given I have <item> in my basket
 Given I am on the Cart Page
-When I apply a discount code
-Then it should reduce the cost when applied
+When I apply a discount code <code>
+Then it should reduce the cost when applied by <amount>
+Examples: 
+| item | code      | amount |
+| cap  | edgewords | 15    |
+
+
+
 
 Scenario: Post Order Details when Logged In
 Given I have placed an order 

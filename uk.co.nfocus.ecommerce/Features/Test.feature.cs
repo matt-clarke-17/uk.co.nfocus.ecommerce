@@ -82,18 +82,21 @@ namespace uk.co.nfocus.ecommerce.Features
 #line 5
 #line hidden
 #line 6
-testRunner.Given("I am logged in and have the cap in my basket", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I am logged in", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
         [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Adding discount")]
-        public void AddingDiscount()
+        [NUnit.Framework.TestCaseAttribute("cap", "edgewords", "15", null)]
+        public void AddingDiscount(string item, string code, string amount, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding discount", "//Given I am logged in and have the cap in my basket\r\n//When I go to the checkout" +
-                    " and add the discount code", tagsOfScenario, argumentsOfScenario, featureTags);
+            argumentsOfScenario.Add("item", item);
+            argumentsOfScenario.Add("code", code);
+            argumentsOfScenario.Add("amount", amount);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Adding discount", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -107,14 +110,17 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 11
+#line 9
+testRunner.Given(string.Format("I have {0} in my basket", item), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 10
 testRunner.Given("I am on the Cart Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
-testRunner.When("I apply a discount code", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 11
+testRunner.When(string.Format("I apply a discount code {0}", code), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 13
-testRunner.Then("it should reduce the cost when applied", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 12
+testRunner.Then(string.Format("it should reduce the cost when applied by {0}", amount), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -127,7 +133,7 @@ testRunner.Then("it should reduce the cost when applied", ((string)(null)), ((Te
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Post Order Details when Logged In", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 15
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -140,16 +146,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 16
+#line 21
 testRunner.Given("I have placed an order", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 17
+#line 22
 testRunner.When("it is completed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 18
+#line 23
 testRunner.Then("I am given a order number", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 19
+#line 24
 testRunner.Then("it matches the order in the top of my account", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

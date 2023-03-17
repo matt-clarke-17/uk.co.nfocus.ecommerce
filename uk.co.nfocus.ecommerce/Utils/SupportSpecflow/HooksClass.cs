@@ -15,10 +15,16 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
     {
 
         public static IWebDriver driver;
-        protected string browser;
-        protected string baseUrl;
+        public static string browser;
+        public static string baseUrl;
         public static string username;
         public static string password;
+        public static string street;
+        public static string area;
+        public static string region;
+        public static string postcode;
+        public static string phoneNumber;
+        
 
         [Before, Scope(Tag = "GUI")] //Equivalent of nUnit [SetUp] - could also use [BeforeScenario]
         public void SetUp()
@@ -31,6 +37,12 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
             //Console.WriteLine(browser);
             baseUrl = TestContext.Parameters["baseURL"];
             //Console.WriteLine(baseUrl);
+            street = TestContext.Parameters["street"];
+            area = TestContext.Parameters["area"];
+            region = TestContext.Parameters["region"];
+            postcode = TestContext.Parameters["postcode"];
+            phoneNumber = TestContext.Parameters["phoneNumber"];
+            
 
             switch (browser)
             {
