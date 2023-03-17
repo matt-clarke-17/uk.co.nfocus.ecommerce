@@ -22,7 +22,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
     {
 
         private readonly ScenarioContext _scenarioContext;
-        HelperLib helperLib = new HelperLib();
+        
 
         public TestSteps(ScenarioContext scenarioContext)
         {
@@ -59,6 +59,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //test could show failure if the basket is not completely empty prior to start
             //could revamp to use modulo (Lack of remainder) on a divisiion
             //would need double coversion to implement 
+            HelperLib helperLib = new HelperLib();
             helperLib.TakeScreenshotOfElement(driver,"DiscountApplied");
             //obtain raw item price
             Console.WriteLine(driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text);
