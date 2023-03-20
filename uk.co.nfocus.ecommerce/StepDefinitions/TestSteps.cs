@@ -20,13 +20,19 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
     [Binding]
     public class TestSteps
     {
-
+        // Create a blank scenario context dictionary.
         private readonly ScenarioContext _scenarioContext;
-        
+        HelperLib helperLib = new HelperLib();
+
+        // Createa blank IWebDriver.
+        private readonly IWebDriver _driver;
 
         public TestSteps(ScenarioContext scenarioContext)
         {
+            // Fill in the dictionary with what the hooks class gave us.
             _scenarioContext = scenarioContext;
+            // Grab the driver from the scenario context dictionary.
+            _driver = (IWebDriver)_scenarioContext["myDriver"];
             
         }
 
@@ -36,20 +42,20 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         public void GivenIAmLoggedIn()
         {
             //top nav cannot be implemented as a feature of scenario context so must be instanciated for each method that wishes to use pom
-            TopNav topNav = new TopNav(driver);
+            TopNav topNav = new TopNav(_driver);
             //navigates through site and adds the cap to the basket 
             topNav.MyAccount.Click();
-            driver.FindElement(By.Id("username")).SendKeys(username);
-            driver.FindElement(By.Id("password")).SendKeys(password);
-            driver.FindElement(By.Name("login")).Click();
+            _driver.FindElement(By.Id("username")).SendKeys(username);
+            _driver.FindElement(By.Id("password")).SendKeys(password);
+            _driver.FindElement(By.Name("login")).Click();
         }
 
         [When(@"I apply a discount code (.*)")]
         public void WhenIAddTheDiscountCode(string discountCode)
         {
             //coupon application code 
-            driver.FindElement(By.Id("coupon_code")).SendKeys(discountCode);
-            driver.FindElement(By.CssSelector("button[name = 'apply_coupon']")).Click();
+            _driver.FindElement(By.Id("coupon_code")).SendKeys(discountCode);
+            _driver.FindElement(By.CssSelector("button[name = 'apply_coupon']")).Click();
             Thread.Sleep(1500);
         }
 
@@ -59,14 +65,16 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //test could show failure if the basket is not completely empty prior to start
             //could revamp to use modulo (Lack of remainder) on a divisiion
             //would need double coversion to implement 
-            HelperLib helperLib = new HelperLib();
-            helperLib.TakeScreenshotOfElement(driver,"DiscountApplied");
+
+
+
+            helperLib.TakeScreenshotOfElement(_driver,"DiscountApplied");
             //obtain raw item price
-            Console.WriteLine(driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text);
-            decimal basePrice = decimal.Parse(driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text.Remove(0, 1));
+            Console.WriteLine(_driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text);
+            decimal basePrice = decimal.Parse(_driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi")).Text.Remove(0, 1));
             Console.WriteLine(basePrice);
-            Console.WriteLine(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text);
-            decimal discountPrice = decimal.Parse(driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text.Remove(0, 1));
+            Console.WriteLine(_driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text);
+            decimal discountPrice = decimal.Parse(_driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount")).Text.Remove(0, 1));
             Console.WriteLine(discountPrice);
             decimal percentReduction = (discountPrice / basePrice) * 100;
             Console.WriteLine(percentReduction);
@@ -81,24 +89,24 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         {
 
             //flushes out any info prior to data insertion for order placement 
-            TopNav topNav = new TopNav(driver);
+            TopNav topNav = new TopNav(_driver);
             topNav.Shop.Click();
-            driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys("Cap" + Keys.Enter);
-            driver.FindElement(By.Name("add-to-cart")).Click();
-            TakeScreenshotOfElement(driver, "CapInBasket");
+            _driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys("Cap" + Keys.Enter);
+            _driver.FindElement(By.Name("add-to-cart")).Click();
+            helperLib.TakeScreenshotOfElement(_driver, "CapInBasket");
             topNav.Checkout.Click();
             //parameterise this as test parameters
-            driver.FindElement(By.Id("billing_address_1")).Clear();
-            driver.FindElement(By.Id("billing_address_1")).SendKeys(street);
-            driver.FindElement(By.Id("billing_city")).Clear();
-            driver.FindElement(By.Id("billing_city")).SendKeys(area);
-            driver.FindElement(By.Id("billing_state")).Clear();
-            driver.FindElement(By.Id("billing_state")).SendKeys(region);
-            driver.FindElement(By.Id("billing_postcode")).Clear();
-            driver.FindElement(By.Id("billing_postcode")).SendKeys(postcode);
-            driver.FindElement(By.Id("billing_phone")).Clear();
-            driver.FindElement(By.Id("billing_phone")).SendKeys(phoneNumber);
-            helpeTakeScreenshotOfElement(driver, "OrderDetailsConfirmation");
+            _driver.FindElement(By.Id("billing_address_1")).Clear();
+            _driver.FindElement(By.Id("billing_address_1")).SendKeys(street);
+            _driver.FindElement(By.Id("billing_city")).Clear();
+            _driver.FindElement(By.Id("billing_city")).SendKeys(area);
+            _driver.FindElement(By.Id("billing_state")).Clear();
+            _driver.FindElement(By.Id("billing_state")).SendKeys(region);
+            _driver.FindElement(By.Id("billing_postcode")).Clear();
+            _driver.FindElement(By.Id("billing_postcode")).SendKeys(postcode);
+            _driver.FindElement(By.Id("billing_phone")).Clear();
+            _driver.FindElement(By.Id("billing_phone")).SendKeys(phoneNumber);
+            helperLib.TakeScreenshotOfElement(_driver, "OrderDetailsConfirmation");
 
         }
 
@@ -107,7 +115,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         {
             //wait for website js to refresh and update
             Thread.Sleep(1000);
-            driver.FindElement(By.CssSelector("button#place_order")).Click();
+            _driver.FindElement(By.CssSelector("button#place_order")).Click();
             Thread.Sleep(1000);
 
         }
@@ -118,10 +126,10 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //wait for site to accept order and then inherit the order number off the page for reference later
             //in scenario context
             Thread.Sleep(2000);
-            var orderNumber = driver.FindElement(By.CssSelector(".order > strong")).Text;
+            var orderNumber = _driver.FindElement(By.CssSelector(".order > strong")).Text;
             Console.WriteLine(orderNumber);
             _scenarioContext["orderNumber"] = orderNumber;
-            TakeScreenshotOfElement(driver, "PostOrderNumber");
+            helperLib.TakeScreenshotOfElement(_driver, "PostOrderNumber");
         }
 
         [Then(@"it matches the order in the top of my account")]
@@ -130,34 +138,34 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //use value stored in scenario context to verify the order exists in the users history 
             var orderNumber = _scenarioContext["orderNumber"];
             Console.WriteLine(orderNumber);
-            TopNav topNav = new TopNav(driver);
+            TopNav topNav = new TopNav(_driver);
             topNav.MyAccount.Click();
-            driver.FindElement(By.PartialLinkText("Orders")).Click();
+            _driver.FindElement(By.PartialLinkText("Orders")).Click();
             Thread.Sleep(2000);
-            var orderNumberAccount = driver.FindElement(By.CssSelector("tr:nth-of-type(1) > .woocommerce-orders-table__cell.woocommerce-orders-table__cell-order-number > a")).Text.Remove(0, 1);
+            var orderNumberAccount = _driver.FindElement(By.CssSelector("tr:nth-of-type(1) > .woocommerce-orders-table__cell.woocommerce-orders-table__cell-order-number > a")).Text.Remove(0, 1);
             Console.WriteLine(orderNumber);
             Assert.That(orderNumber.Equals(orderNumberAccount));
-            TakeScreenshotOfElement(driver, "AccountOrderObservation");
+            helperLib.TakeScreenshotOfElement(_driver, "AccountOrderObservation");
         }
 
         [Given(@"I am on the Cart Page")]
         public void IAmOnTheCartPage()
         {
             //navigates to the basket after the cap has been added to the basket 
-            TopNav topNav = new TopNav(driver);
+            TopNav topNav = new TopNav(_driver);
             topNav.Cart.Click();
-            Assert.That(driver.Url.Equals("https://www.edgewordstraining.co.uk/demo-site/cart/"));
+            Assert.That(_driver.Url.Equals("https://www.edgewordstraining.co.uk/demo-site/cart/"));
         }
         [Given(@"I have (.*) in my basket")]
         public void AddItemToBasket(string itemName)
         {
-            TopNav topNav = new TopNav(driver);
+            TopNav topNav = new TopNav(_driver);
             topNav.Shop.Click();
-            driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys(itemName + Keys.Enter);
-            driver.FindElement(By.Name("add-to-cart")).Click();
+            _driver.FindElement(By.Id("woocommerce-product-search-field-0")).SendKeys(itemName + Keys.Enter);
+            _driver.FindElement(By.Name("add-to-cart")).Click();
             //re-use of variable to avoid pointless variable generation
             itemName = itemName + "InBasket";
-            TakeScreenshotOfElement(driver, itemName);
+            helperLib.TakeScreenshotOfElement(_driver, itemName);
         }
     }
     //POMs

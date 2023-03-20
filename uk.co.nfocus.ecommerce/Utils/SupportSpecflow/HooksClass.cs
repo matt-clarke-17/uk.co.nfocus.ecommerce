@@ -7,14 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Infrastructure;
 
 namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
 {
     [Binding]
     public class HooksClass
     {
-
-        public static IWebDriver driver;
+        // Create an empty object of type ScenarioContext.
+        private readonly ScenarioContext _scenarioContext;
+        // Create an empty object of type IWebDriver.
+        private IWebDriver driver;
         public static string browser;
         public static string baseUrl;
         public static string username;
@@ -24,7 +27,12 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
         public static string region;
         public static string postcode;
         public static string phoneNumber;
-        
+
+        public HooksClass(ScenarioContext scenarioContext)
+        {
+            // Instantiate the scenario context dictionary properly.
+            _scenarioContext = scenarioContext;
+        }
 
         [Before, Scope(Tag = "GUI")] //Equivalent of nUnit [SetUp] - could also use [BeforeScenario]
         public void SetUp()
@@ -57,6 +65,9 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
                     driver = new ChromeDriver();
                     break;
             }
+
+            // Store the driver we just created in the scenario context dictionary.
+            _scenarioContext["myDriver"] = driver;
 
             driver.Url = baseUrl;
         }

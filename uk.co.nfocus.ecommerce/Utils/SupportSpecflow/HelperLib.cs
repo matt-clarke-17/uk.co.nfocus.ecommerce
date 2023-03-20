@@ -12,13 +12,13 @@ using Gherkin.CucumberMessages.Types;
 
 namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
 {
-    class HelperLib
+    public class HelperLib
     {
         public HelperLib()
         {
 
         }
-        public static void HandleAlert(IWebDriver driver)
+        public void HandleAlert(IWebDriver driver)
         {
             Thread.Sleep(1000);
             IAlert logoutAlert = driver.SwitchTo().Alert();
@@ -26,13 +26,13 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
             logoutAlert.Accept();
         }
 
-        public static void WaitForElementPresent(IWebDriver driver, By theElement, int time)
+        public void WaitForElementPresent(IWebDriver driver, By theElement, int time)
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
             wait.Until(drv => drv.FindElement(theElement).Displayed);
         }
 
-        public static void TakeScreenshotOfElement(IWebDriver driver, string filename)
+        public void TakeScreenshotOfElement(IWebDriver driver, string filename)
         {
 
             ITakesScreenshot forms = driver as ITakesScreenshot;
