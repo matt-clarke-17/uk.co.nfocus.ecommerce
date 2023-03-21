@@ -55,29 +55,18 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //coupon application code 
             CartNav cartNav = new CartNav(_driver);
             cartNav.addCouponCode(discountCode);
+            //insert code here to check code appllication
         }
 
         [Then(@"it should reduce the cost when applied by (.*)")]
         public void ThenShouldReduceTheCostWhenApplied(string discountPercentage)
-        {
-            //test could show failure if the basket is not completely empty prior to start
-            //could revamp to use modulo (Lack of remainder) on a divisiion
-            //would need double coversion to implement 
+        { 
 
             CartNav cartNav = new CartNav(_driver);
 
             helperLib.TakeScreenshotOfElement(_driver,"DiscountApplied");
             //obtain raw item price
-            Console.WriteLine(cartNav.basketSubtotal.Text);
-            decimal basePrice = decimal.Parse(cartNav.basketSubtotal.Text.Remove(0, 1));
-            Console.WriteLine(basePrice);
-            Console.WriteLine(cartNav.discountSubtotal.Text);
-            decimal discountPrice = decimal.Parse(cartNav.discountSubtotal.Text.Remove(0, 1));
-            Console.WriteLine(discountPrice);
-            decimal percentReduction = (discountPrice / basePrice) * 100;
-            Console.WriteLine(percentReduction);
-            string percentReductionStr = Convert.ToString(percentReduction).Remove(2);
-            Console.WriteLine(percentReductionStr);
+            string percentReductionStr = cartNav.acquireReductionPercent();
             Assert.That(percentReductionStr, Is.EqualTo(discountPercentage));
 
         }
@@ -95,9 +84,6 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //parameterise this as test parameters
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
             checkoutNav.addBillingDetails(street, area, region, postcode, phoneNumber);
-
-            
-
         }
 
         [When(@"it is completed")]
@@ -133,8 +119,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             topNav.MyAccount.Click();
             AccountNav accountNav = new AccountNav(_driver);
             accountNav.ordersButton.Click();
-            var orderNumberAccount = accountNav.orderNumber.Text.Remove(0, 1);
-            Console.WriteLine(orderNumber);
+            var orderNumberAccount = accountNav.getMostRecentOrder();
             Assert.That(orderNumber.Equals(orderNumberAccount));
             helperLib.TakeScreenshotOfElement(_driver, "AccountOrderObservation");
         }

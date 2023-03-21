@@ -77,10 +77,6 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
         [After("GUI")] //Equivalent of nUnit [TearDown] - could also use [AfterScenario]
         public void TearDown()
         {
-            TopNav topNav = new TopNav(driver);
-            topNav.Cart.Click();
-            //insert try catch to remove existing items in basket
-            
             driver.Quit();
         }
     }

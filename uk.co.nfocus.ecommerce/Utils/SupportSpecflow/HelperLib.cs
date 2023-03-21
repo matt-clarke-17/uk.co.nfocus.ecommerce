@@ -41,5 +41,20 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
             TestContext.WriteLine("Screenshot taken - see report");
             TestContext.AddTestAttachment(@"C:\Users\MatthewClarke\source\repos\uk.co.nfocus.ecommerce\uk.co.nfocus.ecommerce\TestingOutput\" + filename);
         }
+
+        public bool isCartEmpty(By locator, string elementName, IWebDriver _driver)
+        {
+            try
+            {
+                _driver.FindElement(locator);
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                TakeScreenshotOfElement(_driver, "CartFailedRemoval");
+                Console.WriteLine("Removal Failed!");
+                return false;
+            }
+        }
     }
 }

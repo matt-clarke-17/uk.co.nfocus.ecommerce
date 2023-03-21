@@ -31,7 +31,7 @@ namespace uk.co.nfocus.ecommerce.PageObjects
 
         public IWebElement ordersButton => _driver.FindElement(By.PartialLinkText("Orders"));
 
-        public IWebElement orderNumber => _driver.FindElement(By.CssSelector("tr:nth-of-type(1) > .woocommerce-orders-table__cell.woocommerce-orders-table__cell-order-number > a"));
+        public IWebElement orderNumber => _driver.FindElement(By.CssSelector("tr > .woocommerce-orders-table__cell-order-number > a"));
 
     }
 }

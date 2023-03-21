@@ -30,9 +30,24 @@ namespace uk.co.nfocus.ecommerce.PageObjects
 
         public IWebElement applyCodeButton => _driver.FindElement(By.Name("apply_coupon"));
 
-        public IWebElement basketSubtotal => _driver.FindElement(By.CssSelector(".cart-subtotal > td > .amount.woocommerce-Price-amount > bdi"));
-        public IWebElement discountSubtotal => _driver.FindElement(By.CssSelector(".cart-discount.coupon-edgewords > td > .amount.woocommerce-Price-amount"));
+        public IWebElement basketSubtotal => _driver.FindElement(By.CssSelector("tr.cart-subtotal > * > *"));
+        public IWebElement discountSubtotal => _driver.FindElement(By.CssSelector("td[data-title*='Coupon:'] " +
+            "> span.woocommerce-Price-amount"));
 
-
+        public string acquireReductionPercent()
+        {
+            Console.WriteLine(basketSubtotal.Text);
+            decimal basePrice = Convert.ToDecimal(basketSubtotal.Text.Substring(1));
+            Console.WriteLine(basePrice);
+            Console.WriteLine(discountSubtotal.Text);
+            decimal discountPrice = Convert.ToDecimal(discountSubtotal.Text.Substring(1));
+            Console.WriteLine(discountPrice);
+            decimal percentReduction = (discountPrice / basePrice) * 100;
+            Console.WriteLine(percentReduction);
+            string percentReductionStr = Convert.ToString(percentReduction).Remove(2);
+            Console.WriteLine(percentReductionStr);
+            return percentReductionStr;
+        }
+  
     }
 }
