@@ -20,18 +20,19 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
     [Binding]
     public class TestSteps
     {
-        // Create a blank scenario context dictionary.
+        //Create a blank scenario context dictionary
         private readonly ScenarioContext _scenarioContext;
         HelperLib helperLib = new HelperLib();
 
-        // Create a blank IWebDriver.
+        //Create a blank IWebDriver
         private readonly IWebDriver _driver;
 
         public TestSteps(ScenarioContext scenarioContext)
         {
-            // Fill in the dictionary with what the hooks class gave us.
+            //Fill in the dictionary with what the hooks class gave us
+            //to assist OOP Formatting 
             _scenarioContext = scenarioContext;
-            // Grab the driver from the scenario context dictionary.
+            //Grab the driver from the scenario context dictionary
             _driver = (IWebDriver)_scenarioContext["myDriver"];
             
         }

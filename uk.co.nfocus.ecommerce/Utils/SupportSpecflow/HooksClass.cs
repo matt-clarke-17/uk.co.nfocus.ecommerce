@@ -15,9 +15,9 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
     [Binding]
     public class HooksClass
     {
-        // Create an empty object of type ScenarioContext.
+        //Create an empty object of type ScenarioContext
         private readonly ScenarioContext _scenarioContext;
-        // Create an empty object of type IWebDriver.
+        //Create an empty object of type IWebDriver
         private IWebDriver driver;
         public static string browser;
         public static string baseUrl;
@@ -31,8 +31,9 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
 
         public HooksClass(ScenarioContext scenarioContext)
         {
-            // Instantiate the scenario context dictionary properly.
+            //Instantiate the scenario context dictionary properly
             _scenarioContext = scenarioContext;
+            //allows us to store useful variables and context information between tests/scenario segments
         }
 
         [Before, Scope(Tag = "GUI")] //Equivalent of nUnit [SetUp] - could also use [BeforeScenario]
@@ -67,7 +68,8 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
                     break;
             }
 
-            // Store the driver we just created in the scenario context dictionary.
+            //Store the driver we just created in the scenario context dictionary
+            //so it may be used in the actual tests 
             _scenarioContext["myDriver"] = driver;
 
             driver.Url = baseUrl;
