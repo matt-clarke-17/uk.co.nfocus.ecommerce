@@ -15,6 +15,13 @@ namespace uk.co.nfocus.ecommerce.PageObjects
     {
         private IWebDriver _driver;
         private HelperLib helperLib = new HelperLib();
+        private IWebElement billingStreet => _driver.FindElement(By.Id("billing_address_1"));
+        private IWebElement billingArea => _driver.FindElement(By.Id("billing_city"));
+        private IWebElement billingRegion => _driver.FindElement(By.Id("billing_state"));
+        private IWebElement billingPostcode => _driver.FindElement(By.Id("billing_postcode"));
+        private IWebElement billingPhoneNumber => _driver.FindElement(By.Id("billing_phone"));
+        private IWebElement orderNumberLoc => _driver.FindElement(By.CssSelector(".order > strong"));
+        private IWebElement placeOrderButton => _driver.FindElement(By.Id("place_order"));
 
         public CheckoutNav(IWebDriver driver)
         {
@@ -24,36 +31,34 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         public void addBillingDetails(string street, string area, string region, string postcode, string phoneNumber)
         {
             clearBillingDetails();
-            billingLine1.SendKeys(street);
-            billingLine2.SendKeys(area);
-            billingLine3.SendKeys(region);
-            billingLine4.SendKeys(postcode);
-            billingLine5.SendKeys(phoneNumber);
+            billingStreet.SendKeys(street);
+            billingArea.SendKeys(area);
+            billingRegion.SendKeys(region);
+            billingPostcode.SendKeys(postcode);
+            billingPhoneNumber.SendKeys(phoneNumber);
             helperLib.TakeScreenshotOfElement(_driver, "OrderDetailsConfirmation");
         }
 
-        private IWebElement placeOrderButton => _driver.FindElement(By.Id("place_order"));
-        
-
-        private IWebElement billingLine1 => _driver.FindElement(By.Id("billing_address_1"));
-        private IWebElement billingLine2 => _driver.FindElement(By.Id("billing_city"));
-        private IWebElement billingLine3 => _driver.FindElement(By.Id("billing_state"));
-        private IWebElement billingLine4 => _driver.FindElement(By.Id("billing_postcode"));
-        private IWebElement billingLine5 => _driver.FindElement(By.Id("billing_phone"));
-
         private void clearBillingDetails()
         {
-            billingLine1.Clear();
-            billingLine2.Clear();
-            billingLine3.Clear();
-            billingLine4.Clear();
-            billingLine5.Clear();
+            billingStreet.Clear();
+            billingArea.Clear();
+            billingRegion.Clear();
+            billingPostcode.Clear();
+            billingPhoneNumber.Clear();
         }
 
         public void submitOrder()
         {
             Thread.Sleep(1000);
             placeOrderButton.Click();
+        }
+
+        public string collectOrderNumber()
+        {
+            string orderNumber = orderNumberLoc.Text;
+            Console.WriteLine(orderNumber);
+            return orderNumber;
         }
 
     }

@@ -24,7 +24,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         private readonly ScenarioContext _scenarioContext;
         HelperLib helperLib = new HelperLib();
 
-        // Createa blank IWebDriver.
+        // Create a blank IWebDriver.
         private readonly IWebDriver _driver;
 
         public TestSteps(ScenarioContext scenarioContext)
@@ -36,12 +36,10 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             
         }
 
-        //implement a background
         //similar code start point for both scenarios
         [Given(@"I am logged in")]
         public void GivenIAmLoggedIn()
         {
-            //top nav cannot be implemented as a feature of scenario context so must be instanciated for each method that wishes to use pom
             TopNav topNav = new TopNav(_driver);
             //navigates through site and adds the cap to the basket 
             topNav.MyAccount.Click();
@@ -61,27 +59,23 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         [Then(@"it should reduce the cost when applied by (.*)")]
         public void ThenShouldReduceTheCostWhenApplied(string discountPercentage)
         { 
-
             CartNav cartNav = new CartNav(_driver);
-
             helperLib.TakeScreenshotOfElement(_driver,"DiscountApplied");
             //obtain raw item price
             string percentReductionStr = cartNav.acquireReductionPercent();
+            //assert that both prices are the same 
             Assert.That(percentReductionStr, Is.EqualTo(discountPercentage));
 
         }
 
-        [Given(@"I have placed an order")]
-        public void GivenIHavePlacedAnOrder()
+        [Given(@"I have placed an order containing a (.*)")]
+        public void GivenIHavePlacedAnOrder(string itemName)
         {
-
-            //flushes out any info prior to data insertion for order placement 
             TopNav topNav = new TopNav(_driver);
             topNav.Shop.Click();
             ShopNav shopNav = new ShopNav(_driver);
-            shopNav.addItemToBasket("cap");
+            shopNav.addItemToBasket(itemName);
             topNav.Checkout.Click();
-            //parameterise this as test parameters
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
             checkoutNav.addBillingDetails(street, area, region, postcode, phoneNumber);
         }
@@ -99,23 +93,23 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         {
             //wait for site to accept order and then inherit the order number off the page for reference later
             //in scenario context
-            Thread.Sleep(2000);
-            var orderNumber = _driver.FindElement(By.CssSelector(".order > strong")).Text;
-            Console.WriteLine(orderNumber);
-            _scenarioContext["orderNumber"] = orderNumber;
+            HelperLib helperLib = new HelperLib();
+            CheckoutNav checkoutNav = new CheckoutNav(_driver);
+            _scenarioContext["orderNumber"] = checkoutNav.collectOrderNumber();
             helperLib.TakeScreenshotOfElement(_driver, "PostOrderNumber");
         }
 
         [Then(@"it matches the order in the top of my account")]
         public void ThenItMatchesTheOrderInTheTopOfMyAccount()
         {
+            TopNav topNav = new TopNav(_driver);
             //use value stored in scenario context to verify the order exists in the users history 
             var orderNumber = _scenarioContext["orderNumber"];
-            Console.WriteLine(orderNumber);
-            TopNav topNav = new TopNav(_driver);
             topNav.MyAccount.Click();
             AccountNav accountNav = new AccountNav(_driver);
+            //acquire order number from page details
             var orderNumberAccount = accountNav.getMostRecentOrder();
+            //assert that the two are the same
             Assert.That(orderNumber.Equals(orderNumberAccount));
             helperLib.TakeScreenshotOfElement(_driver, "AccountOrderObservation");
         }
@@ -135,6 +129,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             TopNav topNav = new TopNav(_driver);
             topNav.Shop.Click();
             ShopNav shopNav = new ShopNav(_driver);
+            //access utility method to add item to basket
             shopNav.addItemToBasket(itemName);
         }
     }

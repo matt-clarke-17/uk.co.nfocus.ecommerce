@@ -13,6 +13,14 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         private IWebDriver _driver;
         private HelperLib helperLib = new HelperLib();
 
+        private IWebElement usernameBar => _driver.FindElement(By.Id("username"));
+        private IWebElement passwordBar => _driver.FindElement(By.Id("password"));
+        private IWebElement loginButton => _driver.FindElement(By.Name("login"));
+
+        private IWebElement ordersButton => _driver.FindElement(By.PartialLinkText("Orders"));
+
+        private IWebElement orderNumber => _driver.FindElement(By.CssSelector("tr > .woocommerce-orders-table__cell-order-number > a"));
+
         public AccountNav(IWebDriver driver)
         {
             this._driver = driver;
@@ -24,15 +32,6 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             passwordBar.SendKeys(password);
             loginButton.Click();
         }
-
-        private IWebElement usernameBar => _driver.FindElement(By.Id("username"));
-        private IWebElement passwordBar => _driver.FindElement(By.Id("password"));
-        private IWebElement loginButton => _driver.FindElement(By.Name("login"));
-
-        private IWebElement ordersButton => _driver.FindElement(By.PartialLinkText("Orders"));
-
-        private IWebElement orderNumber => _driver.FindElement(By.CssSelector("tr > .woocommerce-orders-table__cell-order-number > a"));
-
         public string getMostRecentOrder()
         {
             ordersButton.Click();

@@ -10,12 +10,6 @@ namespace uk.co.nfocus.ecommerce.PageObjects
     class TopNav
     {
         private IWebDriver driver;
-
-        public TopNav(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
-
         public IWebElement Home => driver.FindElement(By.LinkText("Home"));
 
         public IWebElement Cart => driver.FindElement(By.LinkText("Cart"));
@@ -27,5 +21,11 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         public IWebElement MyAccount => driver.FindElement(By.LinkText("My account"));
 
         public IWebElement Blog => driver.FindElement(By.LinkText("Blog"));
+
+        public TopNav(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
     }
+        
 }

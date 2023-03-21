@@ -12,6 +12,10 @@ namespace uk.co.nfocus.ecommerce.PageObjects
     {
         private IWebDriver _driver;
         HelperLib helperLib = new HelperLib();
+        private IWebElement searchBar => _driver.FindElement(By.Name("s"));
+
+        private IWebElement addToCart => _driver.FindElement(By.Name("add-to-cart"));
+
 
         public ShopNav(IWebDriver driver)
         {
@@ -26,11 +30,5 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             itemName = itemName + "InBasket";
             helperLib.TakeScreenshotOfElement(_driver, itemName);
         }
-
-        private IWebElement searchBar => _driver.FindElement(By.Name("s"));
-
-        private IWebElement addToCart => _driver.FindElement(By.Name("add-to-cart"));
-
-
     }
 }
