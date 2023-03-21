@@ -27,9 +27,9 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             helperLib.TakeScreenshotOfElement(_driver, itemName);
         }
 
-        public IWebElement searchBar => _driver.FindElement(By.Name("s"));
+        private IWebElement searchBar => _driver.FindElement(By.Name("s"));
 
-        public IWebElement addToCart => _driver.FindElement(By.Name("add-to-cart"));
+        private IWebElement addToCart => _driver.FindElement(By.Name("add-to-cart"));
 
 
     }

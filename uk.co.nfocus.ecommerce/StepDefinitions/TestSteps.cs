@@ -91,10 +91,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         {
             //wait for website js to refresh and update
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
-            HelperLib helperLib = new HelperLib();
-            Thread.Sleep(1000);
-            helperLib.WaitForElementPresent(_driver, By.Id("place_order"), 1500);
-            checkoutNav.placeOrderButton.Click();
+            checkoutNav.submitOrder();
         }
 
         [Then(@"I am given a order number")]
@@ -118,7 +115,6 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             TopNav topNav = new TopNav(_driver);
             topNav.MyAccount.Click();
             AccountNav accountNav = new AccountNav(_driver);
-            accountNav.ordersButton.Click();
             var orderNumberAccount = accountNav.getMostRecentOrder();
             Assert.That(orderNumber.Equals(orderNumberAccount));
             helperLib.TakeScreenshotOfElement(_driver, "AccountOrderObservation");

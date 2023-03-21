@@ -13,7 +13,7 @@ namespace uk.co.nfocus.ecommerce.PageObjects
     class CartNav
     {
         private IWebDriver _driver;
-        HelperLib helperLib = new HelperLib();
+        private HelperLib helperLib = new HelperLib();
 
         public CartNav(IWebDriver driver)
         {

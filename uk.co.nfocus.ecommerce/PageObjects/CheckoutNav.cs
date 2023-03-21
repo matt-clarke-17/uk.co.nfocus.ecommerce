@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions.Execution;
@@ -13,7 +14,7 @@ namespace uk.co.nfocus.ecommerce.PageObjects
     class CheckoutNav
     {
         private IWebDriver _driver;
-        HelperLib helperLib = new HelperLib();
+        private HelperLib helperLib = new HelperLib();
 
         public CheckoutNav(IWebDriver driver)
         {
@@ -31,13 +32,14 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             helperLib.TakeScreenshotOfElement(_driver, "OrderDetailsConfirmation");
         }
 
-        public IWebElement placeOrderButton => _driver.FindElement(By.Id("place_order"));
+        private IWebElement placeOrderButton => _driver.FindElement(By.Id("place_order"));
+        
 
-        public IWebElement billingLine1 => _driver.FindElement(By.Id("billing_address_1"));
-        public IWebElement billingLine2 => _driver.FindElement(By.Id("billing_city"));
-        public IWebElement billingLine3 => _driver.FindElement(By.Id("billing_state"));
-        public IWebElement billingLine4 => _driver.FindElement(By.Id("billing_postcode"));
-        public IWebElement billingLine5 => _driver.FindElement(By.Id("billing_phone"));
+        private IWebElement billingLine1 => _driver.FindElement(By.Id("billing_address_1"));
+        private IWebElement billingLine2 => _driver.FindElement(By.Id("billing_city"));
+        private IWebElement billingLine3 => _driver.FindElement(By.Id("billing_state"));
+        private IWebElement billingLine4 => _driver.FindElement(By.Id("billing_postcode"));
+        private IWebElement billingLine5 => _driver.FindElement(By.Id("billing_phone"));
 
         private void clearBillingDetails()
         {
@@ -46,6 +48,12 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             billingLine3.Clear();
             billingLine4.Clear();
             billingLine5.Clear();
+        }
+
+        public void submitOrder()
+        {
+            Thread.Sleep(1000);
+            placeOrderButton.Click();
         }
 
     }
