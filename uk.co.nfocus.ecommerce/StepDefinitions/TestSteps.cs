@@ -65,7 +65,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //obtain raw item price
             string percentReductionStr = cartNav.acquireReductionPercent();
             //assert that both prices are the same 
-            Assert.That(percentReductionStr, Is.EqualTo(discountPercentage));
+            Assert.That(percentReductionStr, Is.EqualTo(discountPercentage), "Discount Percentage Expected does not match received");
             //cleanup method
             cartNav.cleanUpAddingDiscount();
 
@@ -96,10 +96,10 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         {
             //wait for site to accept order and then inherit the order number off the page for reference later
             //in scenario context
-            HelperLib helperLib = new HelperLib();
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
             //enables test to inherit data for later comparison
             _scenarioContext["orderNumber"] = checkoutNav.collectOrderNumber();
+            Assert.That(_scenarioContext["orderNumber"] != null, "Null Value acquired from page => Acquisition Failed");
             helperLib.TakeScreenshotOfElement(_driver, "PostOrderNumber");
         }
 
@@ -110,11 +110,12 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //use value stored in scenario context to verify the order exists in the users history 
             var orderNumber = _scenarioContext["orderNumber"];
             topNav.MyAccount.Click();
+            Assert.That(_driver.Title, Does.Contain("Cart"), "Not on the Account page => Navigation Failed");
             AccountNav accountNav = new AccountNav(_driver);
             //acquire order number from page details
             var orderNumberAccount = accountNav.getMostRecentOrder();
             //assert that the two are the same
-            Assert.That(orderNumber.Equals(orderNumberAccount));
+            Assert.That(orderNumber.Equals(orderNumberAccount), "Order Numbers do not match");
             helperLib.TakeScreenshotOfElement(_driver, "AccountOrderObservation");
         }
 
@@ -124,7 +125,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //navigates to the basket after the cap has been added to the basket 
             TopNav topNav = new TopNav(_driver);
             topNav.Cart.Click();
-            Assert.That(_driver.Title, Does.Contain("Cart"));
+            Assert.That(_driver.Title, Does.Contain("Cart"), "Not on the cart page => Navigation Failed");
         }
 
         [Given(@"I have (.*) in my basket")]
