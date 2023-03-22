@@ -18,10 +18,10 @@ Examples:
 
 
 Scenario: Post Order Details when Logged In
-	Given I have placed an order containting atleast a <item>
+	Given I have placed an order containing atleast a <item>
 	When it is completed
 	Then I am given a order number
 	Then it matches the order in the top of my account
-Examples: 
+Examples:
 	| item |
 	| cap  |

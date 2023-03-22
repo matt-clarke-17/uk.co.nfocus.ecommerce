@@ -74,7 +74,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
 
         }
 
-        [Given(@"I have placed an order containting atleast a (.*)")]
+        [Given(@"I have placed an order containing atleast a (.*)")]
         public void GivenIHavePlacedAnOrder(string itemName)
         {
             TopNav topNav = new TopNav(_driver);
