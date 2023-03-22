@@ -17,16 +17,12 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         private HelperLib helperLib = new HelperLib();
 
         private IWebElement applyCodeButton => _driver.FindElement(By.Name("apply_coupon"));
-
         private By subtotalLocator = By.CssSelector("tr.cart-subtotal > * > *");
         private IWebElement basketSubtotal => _driver.FindElement(subtotalLocator);
-
         private By discountSubtotalLocator = By.CssSelector("td[data-title*='Coupon:'] " +
             "> span.woocommerce-Price-amount");
         private IWebElement discountSubtotal => _driver.FindElement(discountSubtotalLocator);
-        private IWebElement couponCodeBox => _driver.FindElement(By.Id("coupon_code"));
-
-        
+        private IWebElement couponCodeBox => _driver.FindElement(By.Id("coupon_code"));            
         private By alertBoxLocator = By.CssSelector("div[role='alert']");
 
         public CartNav(IWebDriver driver)
@@ -68,5 +64,10 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             return percentReductionStr;        
         }
   
+        public void cleanUpAddingDiscount()
+        {
+            _driver.FindElement(By.LinkText("[Remove]")).Click();
+            _driver.FindElement(By.LinkText("×")).Click();
+        }
     }
 }

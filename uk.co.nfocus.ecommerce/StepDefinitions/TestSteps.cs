@@ -67,10 +67,12 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             string percentReductionStr = cartNav.acquireReductionPercent();
             //assert that both prices are the same 
             Assert.That(percentReductionStr, Is.EqualTo(discountPercentage));
+            //cleanup method
+            cartNav.cleanUpAddingDiscount();
 
         }
 
-        [Given(@"I have placed an order containting a (.*)")]
+        [Given(@"I have placed an order containting atleast a (.*)")]
         public void GivenIHavePlacedAnOrder(string itemName)
         {
             TopNav topNav = new TopNav(_driver);

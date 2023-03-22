@@ -18,13 +18,13 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
         {
 
         }
-        public void HandleAlert(IWebDriver driver)
+        /*public void HandleAlert(IWebDriver driver)
         {
             Thread.Sleep(1000);
-            IAlert logoutAlert = driver.SwitchTo().Alert();
-            Console.WriteLine(logoutAlert.Text);
-            logoutAlert.Accept();
-        }
+            IAlert bannerAlert = driver.SwitchTo().Alert();
+            Console.WriteLine(bannerAlert.Text);
+            bannerAlert.Accept();
+        }*/
 
         public void WaitForElementPresent(IWebDriver driver, By theElement, int time)
         {
