@@ -24,6 +24,8 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         private IWebElement discountSubtotal => _driver.FindElement(discountSubtotalLocator);
         private IWebElement couponCodeBox => _driver.FindElement(By.Id("coupon_code"));            
         private By alertBoxLocator = By.CssSelector("div[role='alert']");
+        private By removeDiscountByLinkText = By.LinkText("[Remove]");
+        private By removeItemByLinkText = By.LinkText("×");
 
         public CartNav(IWebDriver driver)
         {
@@ -66,8 +68,8 @@ namespace uk.co.nfocus.ecommerce.PageObjects
   
         public void cleanUpAddingDiscount()
         {
-            _driver.FindElement(By.LinkText("[Remove]")).Click();
-            _driver.FindElement(By.LinkText("×")).Click();
+            _driver.FindElement(removeDiscountByLinkText).Click();
+            _driver.FindElement(removeItemByLinkText).Click();
         }
     }
 }

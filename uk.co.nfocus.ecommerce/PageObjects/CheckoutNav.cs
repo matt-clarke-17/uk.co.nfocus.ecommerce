@@ -22,8 +22,6 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         private IWebElement billingPhoneNumber => _driver.FindElement(By.Id("billing_phone"));
         private static By orderNumberByLocator = By.CssSelector(".order > strong");
         private IWebElement orderNumberLoc => _driver.FindElement(orderNumberByLocator);
-
-
         private IWebElement placeOrderButton => _driver.FindElement(By.Id("place_order"));
 
         public CheckoutNav(IWebDriver driver)
@@ -65,6 +63,5 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             Console.WriteLine(orderNumber);
             return orderNumber;
         }
-
     }
 }

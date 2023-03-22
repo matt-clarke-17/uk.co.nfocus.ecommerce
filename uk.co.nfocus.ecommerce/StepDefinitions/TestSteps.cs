@@ -23,7 +23,6 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         //Create a blank scenario context dictionary
         private readonly ScenarioContext _scenarioContext;
         HelperLib helperLib = new HelperLib();
-
         //Create a blank IWebDriver
         private readonly IWebDriver _driver;
 
@@ -34,7 +33,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             _scenarioContext = scenarioContext;
             //Grab the driver from the scenario context dictionary
             _driver = (IWebDriver)_scenarioContext["myDriver"];
-            
+
         }
 
         //similar code start point for both scenarios
@@ -54,15 +53,15 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //coupon application code 
             CartNav cartNav = new CartNav(_driver);
             string alertBoxText = cartNav.addCouponCode(discountCode);
-            Assert.That(alertBoxText, Does.Contain("Coupon code applied successfully"));
+            Assert.That(alertBoxText, Does.Contain("Coupon code applied successfully"), "Please clear basket prior to running of existing items and discount code before running");
             //insert code here to check code appllication
         }
 
         [Then(@"it should reduce the cost when applied by (.*)")]
         public void ThenShouldReduceTheCostWhenApplied(string discountPercentage)
-        { 
+        {
             CartNav cartNav = new CartNav(_driver);
-            helperLib.TakeScreenshotOfElement(_driver,"DiscountApplied");
+            helperLib.TakeScreenshotOfElement(_driver, "DiscountApplied");
             //obtain raw item price
             string percentReductionStr = cartNav.acquireReductionPercent();
             //assert that both prices are the same 
