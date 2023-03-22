@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Infrastructure;
 using uk.co.nfocus.ecommerce.PageObjects;
@@ -39,20 +40,7 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
         [Before, Scope(Tag = "GUI")] //Equivalent of nUnit [SetUp] - could also use [BeforeScenario]
         public void SetUp()
         {
-            username = Environment.GetEnvironmentVariable("USERNAME");
-            //Console.WriteLine(username);
-            password = Environment.GetEnvironmentVariable("PASSWORD");
-            //Console.WriteLine(password);
-            browser = TestContext.Parameters["browser"];
-            //Console.WriteLine(browser);
-            baseUrl = TestContext.Parameters["baseURL"];
-            //Console.WriteLine(baseUrl);
-            street = TestContext.Parameters["street"];
-            area = TestContext.Parameters["area"];
-            region = TestContext.Parameters["region"];
-            postcode = TestContext.Parameters["postcode"];
-            phoneNumber = TestContext.Parameters["phoneNumber"];
-            
+            loadVariables();            
 
             switch (browser)
             {
@@ -71,15 +59,29 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
             //Store the driver we just created in the scenario context dictionary
             //so it may be used in the actual tests 
             _scenarioContext["myDriver"] = driver;
+            
 
             driver.Url = baseUrl;
         }
-    
+
 
         [After("GUI")] //Equivalent of nUnit [TearDown] - could also use [AfterScenario]
         public void TearDown()
         {
             driver.Quit();
+        }
+
+        private void loadVariables()
+        {
+            username = NonDriverAssists.acquireEnvironmentParameter("USERNAME");
+            password = NonDriverAssists.acquireEnvironmentParameter("PASSWORD");
+            browser = NonDriverAssists.acquireTestParameter("browser");
+            baseUrl = NonDriverAssists.acquireTestParameter("baseURL");
+            street = NonDriverAssists.acquireTestParameter("street");
+            area = NonDriverAssists.acquireTestParameter("area");
+            region = NonDriverAssists.acquireTestParameter("region");
+            postcode = NonDriverAssists.acquireTestParameter("postcode");
+            phoneNumber = NonDriverAssists.acquireTestParameter("phoneNumber");
         }
     }
 }

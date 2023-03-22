@@ -20,7 +20,10 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         private IWebElement billingRegion => _driver.FindElement(By.Id("billing_state"));
         private IWebElement billingPostcode => _driver.FindElement(By.Id("billing_postcode"));
         private IWebElement billingPhoneNumber => _driver.FindElement(By.Id("billing_phone"));
-        private IWebElement orderNumberLoc => _driver.FindElement(By.CssSelector(".order > strong"));
+        private static By orderNumberByLocator = By.CssSelector(".order > strong");
+        private IWebElement orderNumberLoc => _driver.FindElement(orderNumberByLocator);
+
+
         private IWebElement placeOrderButton => _driver.FindElement(By.Id("place_order"));
 
         public CheckoutNav(IWebDriver driver)
@@ -56,6 +59,8 @@ namespace uk.co.nfocus.ecommerce.PageObjects
 
         public string collectOrderNumber()
         {
+            HelperLib helperLib = new HelperLib();
+            helperLib.WaitForElementPresent(_driver, orderNumberByLocator, 1);
             string orderNumber = orderNumberLoc.Text;
             Console.WriteLine(orderNumber);
             return orderNumber;

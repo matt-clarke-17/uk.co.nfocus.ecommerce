@@ -69,7 +69,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
 
         }
 
-        [Given(@"I have placed an order containing a (.*)")]
+        [Given(@"I have placed an order containting a (.*)")]
         public void GivenIHavePlacedAnOrder(string itemName)
         {
             TopNav topNav = new TopNav(_driver);
@@ -96,6 +96,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //in scenario context
             HelperLib helperLib = new HelperLib();
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
+            //enables test to inherit data for later comparison
             _scenarioContext["orderNumber"] = checkoutNav.collectOrderNumber();
             helperLib.TakeScreenshotOfElement(_driver, "PostOrderNumber");
         }
