@@ -36,7 +36,7 @@ namespace uk.co.nfocus.ecommerce.PageObjects
             couponCodeBox.SendKeys(discountCode);
             applyCodeButton.Click();
             HelperLib helperLib = new HelperLib();
-            helperLib.WaitForElementPresent(_driver, alertBoxLocator, 1);
+            helperLib.WaitForElementPresent(_driver, alertBoxLocator, 2);
             return _driver.FindElement(alertBoxLocator).Text;
         }
 
@@ -68,7 +68,10 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         public void cleanUpAddingDiscount()
         {
             _driver.FindElement(removeDiscountByLinkText).Click();
+            HelperLib helperLib = new HelperLib();
+            helperLib.WaitForElementPresent(_driver, removeItemByLinkText, 1);
             _driver.FindElement(removeItemByLinkText).Click();
+            Thread.Sleep(1000);
         }
     }
 }

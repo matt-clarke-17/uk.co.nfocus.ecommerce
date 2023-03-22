@@ -77,12 +77,15 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         [Given(@"I have placed an order containing atleast a (.*)")]
         public void GivenIHavePlacedAnOrder(string itemName)
         {
+            //initialise drivers as and when required and in order to maintain consistency  
             TopNav topNav = new TopNav(_driver);
             topNav.Shop.Click();
             ShopNav shopNav = new ShopNav(_driver);
             shopNav.addItemToBasket(itemName);
             topNav.Checkout.Click();
+            //generate checkout driver to drive functionality on the checkout page 
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
+            Assert.That(_driver.Title, Does.Contain("Checkout"), "Not on the Checkout page => Navigation Failed");
             checkoutNav.addBillingDetails(street, area, region, postcode, phoneNumber);
             Console.WriteLine("Order details added successfully");
         }

@@ -149,7 +149,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 21
- testRunner.Given(string.Format("I have placed an order containting atleast a {0}", item), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given(string.Format("I have placed an order containing atleast a {0}", item), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 22
  testRunner.When("it is completed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
