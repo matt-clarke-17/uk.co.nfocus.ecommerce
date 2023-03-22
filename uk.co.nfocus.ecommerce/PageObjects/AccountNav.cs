@@ -34,7 +34,7 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         {
             ordersButton.Click();
             string mostRecentOrderNumber = orderNumber.Text.Substring(1);
-            Console.WriteLine(orderNumber);
+            Console.WriteLine(mostRecentOrderNumber);
             return mostRecentOrderNumber;
         }
 

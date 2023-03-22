@@ -58,9 +58,8 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
 
             //Store the driver we just created in the scenario context dictionary
             //so it may be used in the actual tests 
-            _scenarioContext["myDriver"] = driver;
-            
-
+            _scenarioContext["myDriver"] = driver;           
+            //launches driver at given url 
             driver.Url = baseUrl;
         }
 
@@ -73,6 +72,7 @@ namespace uk.co.nfocus.ecommerce.Utils.SupportSpecflow
 
         private void loadVariables()
         {
+            //loads in all parameters from external library function with Assertions to allow for debugging 
             username = NonDriverAssists.acquireEnvironmentParameter("USERNAME");
             password = NonDriverAssists.acquireEnvironmentParameter("PASSWORD");
             browser = NonDriverAssists.acquireTestParameter("browser");

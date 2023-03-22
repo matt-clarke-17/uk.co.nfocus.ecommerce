@@ -45,6 +45,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             topNav.MyAccount.Click();
             AccountNav accountNav = new AccountNav(_driver);
             accountNav.LogIn(username, password);
+            Console.WriteLine("Background Complete");
         }
 
         [When(@"I apply a discount code (.*)")]
@@ -54,7 +55,8 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             CartNav cartNav = new CartNav(_driver);
             string alertBoxText = cartNav.addCouponCode(discountCode);
             Assert.That(alertBoxText, Does.Contain("Coupon code applied successfully"), "Please clear basket prior to running of existing items and discount code before running");
-            //insert code here to check code appllication
+            //insert code here to check code application
+            Console.WriteLine("Discount Application Complete");
         }
 
         [Then(@"it should reduce the cost when applied by (.*)")]
@@ -66,6 +68,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             string percentReductionStr = cartNav.acquireReductionPercent();
             //assert that both prices are the same 
             Assert.That(percentReductionStr, Is.EqualTo(discountPercentage), "Discount Percentage Expected does not match received");
+            Console.WriteLine("Discount Verification Complete");
             //cleanup method
             cartNav.cleanUpAddingDiscount();
 
@@ -81,6 +84,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             topNav.Checkout.Click();
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
             checkoutNav.addBillingDetails(street, area, region, postcode, phoneNumber);
+            Console.WriteLine("Order details added successfully");
         }
 
         [When(@"it is completed")]
@@ -89,6 +93,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //wait for website js to refresh and update
             CheckoutNav checkoutNav = new CheckoutNav(_driver);
             checkoutNav.submitOrder();
+            Console.WriteLine("Order Submitted");
         }
 
         [Then(@"I am given a order number")]
@@ -101,6 +106,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             _scenarioContext["orderNumber"] = checkoutNav.collectOrderNumber();
             Assert.That(_scenarioContext["orderNumber"] != null, "Null Value acquired from page => Acquisition Failed");
             helperLib.TakeScreenshotOfElement(_driver, "PostOrderNumber");
+            Console.WriteLine("Order Number Acquisition Sucessful");
         }
 
         [Then(@"it matches the order in the top of my account")]
@@ -110,13 +116,14 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             //use value stored in scenario context to verify the order exists in the users history 
             var orderNumber = _scenarioContext["orderNumber"];
             topNav.MyAccount.Click();
-            Assert.That(_driver.Title, Does.Contain("Cart"), "Not on the Account page => Navigation Failed");
+            Assert.That(_driver.Title, Does.Contain("account"), "Not on the Account page => Navigation Failed");
             AccountNav accountNav = new AccountNav(_driver);
             //acquire order number from page details
             var orderNumberAccount = accountNav.getMostRecentOrder();
             //assert that the two are the same
             Assert.That(orderNumber.Equals(orderNumberAccount), "Order Numbers do not match");
             helperLib.TakeScreenshotOfElement(_driver, "AccountOrderObservation");
+            Console.WriteLine("Order Number Verification Successful");
         }
 
         [Given(@"I am on the Cart Page")]
@@ -126,6 +133,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             TopNav topNav = new TopNav(_driver);
             topNav.Cart.Click();
             Assert.That(_driver.Title, Does.Contain("Cart"), "Not on the cart page => Navigation Failed");
+            Console.WriteLine("Navigation to Cart Page Successful");
         }
 
         [Given(@"I have (.*) in my basket")]
@@ -136,6 +144,7 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
             ShopNav shopNav = new ShopNav(_driver);
             //access utility method to add item to basket
             shopNav.addItemToBasket(itemName);
+            Console.WriteLine("Item successfully added to basket");
         }
     }
 }

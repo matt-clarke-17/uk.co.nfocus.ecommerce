@@ -15,7 +15,6 @@ namespace uk.co.nfocus.ecommerce.PageObjects
     {
         private IWebDriver _driver;
         private HelperLib helperLib = new HelperLib();
-
         private IWebElement applyCodeButton => _driver.FindElement(By.Name("apply_coupon"));
         private By subtotalLocator = By.CssSelector("tr.cart-subtotal > * > *");
         private IWebElement basketSubtotal => _driver.FindElement(subtotalLocator);
