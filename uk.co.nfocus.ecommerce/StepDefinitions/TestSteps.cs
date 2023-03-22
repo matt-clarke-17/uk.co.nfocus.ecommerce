@@ -53,7 +53,8 @@ namespace uk.co.nfocus.ecommerce.StepDefinitions
         {
             //coupon application code 
             CartNav cartNav = new CartNav(_driver);
-            cartNav.addCouponCode(discountCode);
+            string alertBoxText = cartNav.addCouponCode(discountCode);
+            Assert.That(alertBoxText, Does.Contain("Coupon code applied successfully"));
             //insert code here to check code appllication
         }
 

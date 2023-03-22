@@ -16,30 +16,40 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         private IWebDriver _driver;
         private HelperLib helperLib = new HelperLib();
 
-        public IWebElement applyCodeButton => _driver.FindElement(By.Name("apply_coupon"));
+        private IWebElement applyCodeButton => _driver.FindElement(By.Name("apply_coupon"));
 
-        public IWebElement basketSubtotal => _driver.FindElement(By.CssSelector("tr.cart-subtotal > * > *"));
-        public IWebElement discountSubtotal => _driver.FindElement(By.CssSelector("td[data-title*='Coupon:'] " +
-            "> span.woocommerce-Price-amount"));
-        public IWebElement couponCodeBox => _driver.FindElement(By.Id("coupon_code"));
+        private By subtotalLocator = By.CssSelector("tr.cart-subtotal > * > *");
+        private IWebElement basketSubtotal => _driver.FindElement(subtotalLocator);
+
+        private By discountSubtotalLocator = By.CssSelector("td[data-title*='Coupon:'] " +
+            "> span.woocommerce-Price-amount");
+        private IWebElement discountSubtotal => _driver.FindElement(discountSubtotalLocator);
+        private IWebElement couponCodeBox => _driver.FindElement(By.Id("coupon_code"));
+
+        
+        private By alertBoxLocator = By.CssSelector("div[role='alert']");
 
         public CartNav(IWebDriver driver)
         {
             this._driver = driver;
         }
 
-        public void addCouponCode(string discountCode)
+        public string addCouponCode(string discountCode)
         {
             couponCodeBox.SendKeys(discountCode);
             applyCodeButton.Click();
-            Thread.Sleep(1000);
+            HelperLib helperLib = new HelperLib();
+            helperLib.WaitForElementPresent(_driver, alertBoxLocator, 1);
+            return _driver.FindElement(alertBoxLocator).Text;
         }
 
         public string acquireReductionPercent()
         {
+            HelperLib helperLib = new HelperLib();
             Console.WriteLine(basketSubtotal.Text);
             decimal basePrice = getValue(basketSubtotal);
-            decimal discountPrice = getValue(discountSubtotal);
+            helperLib.WaitForElementPresent(_driver, discountSubtotalLocator, 1);            
+            decimal discountPrice = getValue(discountSubtotal);            
             string percentReductionStr = convertToPercent(basePrice, discountPrice);
             return percentReductionStr;
         }
@@ -55,7 +65,8 @@ namespace uk.co.nfocus.ecommerce.PageObjects
         {
             decimal percentReduction = (discountPrice / basePrice) * 100;
             string percentReductionStr = Convert.ToString(percentReduction).Remove(2);
-            return percentReductionStr;        }
+            return percentReductionStr;        
+        }
   
     }
 }
